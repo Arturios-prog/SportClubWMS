@@ -21,14 +21,19 @@ namespace SportClubAPI.Models
             return _appDbContext.CustomerSportGoods.Include(csg => csg.Customer);
         }
 
-        public CustomerSportGood GetCustomerSportGoodById(int customerid, int sportGoodid)
+        public IEnumerable<CustomerSportGood> GetAllCustomerSportGoodsById(int customerId)
+        {
+            return _appDbContext.CustomerSportGoods.Where(csg => csg.CustomerId == customerId);
+        }
+
+        public CustomerSportGood? GetCustomerSportGoodById(int customerid, int sportGoodid)
         {
             return _appDbContext.CustomerSportGoods
                 .Where(csg => csg.CustomerId == customerid && csg.SportGoodId == sportGoodid)
                 .FirstOrDefault();
         }
 
-        public CustomerSportGood AddCustomerSportGood(CustomerSportGood csg)
+        public CustomerSportGood? AddCustomerSportGood(CustomerSportGood csg)
         {
             var addedEntity = _appDbContext.CustomerSportGoods.Add(csg);
             _appDbContext.SaveChanges();

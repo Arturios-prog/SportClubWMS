@@ -32,6 +32,7 @@ namespace SportClubAPI.Controllers
             return Ok(_customerRepository.GetAllCustomers(true));
         }
 
+        // GET: api/<controller>/5/count
         [HttpGet("{id}/count")]
         public IActionResult GetCustomerGoodsCount(int id)
         {
@@ -39,14 +40,14 @@ namespace SportClubAPI.Controllers
         }
         // GET: api/<controller>
         [HttpGet]
-        public IActionResult GetCustomersWithoutGoods()
+        public IActionResult GetAllCustomersWithoutGoods()
         {
             return Ok(_customerRepository.GetAllCustomers(false));
         }
 
         // GET: api/<controller>/5
         [HttpGet("{id}")]
-        public IActionResult GetCustomerWithoutGoods(int id)
+        public IActionResult GetCustomerByIdWithoutGoods(int id)
         {
             var foundCustomer = _customerRepository.GetCustomerById(id, false);
             if (foundCustomer != null)
@@ -56,7 +57,7 @@ namespace SportClubAPI.Controllers
 
         // GET: api/<controller>/5/includegoods
         [HttpGet("{id}/includegoods")]
-        public IActionResult GetCustomerWithGoods(int id)
+        public IActionResult GetCustomerByIdWithGoods(int id)
         {
             var foundCustomer = _customerRepository.GetCustomerById(id, true);
             if (foundCustomer != null)
@@ -64,12 +65,23 @@ namespace SportClubAPI.Controllers
             else return NotFound();
         }
 
+        // GET: api/<controller>/csgoods
         [HttpGet("csgoods")]
         public IActionResult GetAllCustomerSportGoods()
         {
             return Ok(_customerSportGoodRepository.GetAllCustomerSportGoods());
         }
 
+        // GET: api/<controller>/5/onlygoods
+        [HttpGet("{id}/onlygoods")]
+        public IActionResult GetCustomerGoodsById(int id)
+        {
+            if (id < 1)
+                return BadRequest();
+            if (_customerRepository.GetCustomerById(id, false) == null)
+                return NotFound();
+            return Ok(_customerSportGoodRepository.GetAllCustomerSportGoodsById(id));
+        }
         // POST: api/<controller>
         [HttpPost]
         public IActionResult CreateCustomer([FromBody] Customer customer)

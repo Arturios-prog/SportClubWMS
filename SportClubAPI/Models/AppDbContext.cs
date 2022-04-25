@@ -22,15 +22,7 @@ namespace SportClubAPI.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<SportGood>().HasData(new SportGood()
-            {
-                Name = "Football ball",
-                Description = "A ball that is used in a football game",
-                Category = SportCategory.Football,
-                Quantity = 1,
-                Customers = new List<Customer>()
-            });
-            modelBuilder.Entity<Customer>().HasData(new Customer()
+                        modelBuilder.Entity<Customer>().HasData(new Customer()
             {
                 FirstName = "Tom",
                 SecondName = "Jackson",

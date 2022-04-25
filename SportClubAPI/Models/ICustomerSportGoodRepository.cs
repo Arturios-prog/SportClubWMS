@@ -4,10 +4,11 @@ namespace SportClubAPI.Models
 {
     public interface ICustomerSportGoodRepository
     {
-        IEnumerable<CustomerSportGood> GetAllCustomerSportGoods();
-        CustomerSportGood GetCustomerSportGoodById(int customerId, int sportGoodId);
-        void UpdateCustomerSportGoodQuantity(int sportGoodId, uint quantity, string operation);
-        CustomerSportGood AddCustomerSportGood(CustomerSportGood csg);
+        CustomerSportGood? AddCustomerSportGood(CustomerSportGood csg);
         void DeleteCustomerSportGood(int customerId, int sportGoodId);
+        IEnumerable<CustomerSportGood> GetAllCustomerSportGoods();
+        IEnumerable<CustomerSportGood> GetAllCustomerSportGoodsById(int customerId);
+        CustomerSportGood? GetCustomerSportGoodById(int customerid, int sportGoodid);
+        void UpdateCustomerSportGoodQuantity(int sportGoodId, uint quantity, string operation);
     }
 }
