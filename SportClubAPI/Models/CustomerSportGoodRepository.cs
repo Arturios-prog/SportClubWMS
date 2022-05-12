@@ -18,7 +18,7 @@ namespace SportClubAPI.Models
 
         public IEnumerable<CustomerSportGood> GetAllCustomerSportGoods()
         {
-            return _appDbContext.CustomerSportGoods.Include(csg => csg.Customer);
+            return _appDbContext.CustomerSportGoods;
         }
 
         public IEnumerable<CustomerSportGood> GetAllCustomerSportGoodsById(int customerId)
@@ -50,6 +50,22 @@ namespace SportClubAPI.Models
             _appDbContext.SaveChanges();
         }
 
+        public CustomerSportGood? UpdateCustomerSportGood(CustomerSportGood customerSportGood)
+		{
+            var foundCustomerSportGood = _appDbContext.CustomerSportGoods.Where(csg => csg.CustomerId == customerSportGood.Id &&
+            csg.SportGoodId == customerSportGood.SportGoodId).FirstOrDefault();
+
+            if (foundCustomerSportGood != null)
+			{
+                foundCustomerSportGood.SportGoodId = customerSportGood.SportGoodId;
+                foundCustomerSportGood.SportGoodName = customerSportGood.SportGoodName;
+                foundCustomerSportGood.Quantity = customerSportGood.Quantity;
+
+                _appDbContext.SaveChanges();
+                return foundCustomerSportGood;
+			}
+            return null;
+		}
         public void UpdateCustomerSportGoodQuantity(int sportGoodId, uint quantity, string operation)
         {
             var foundCsg = _appDbContext.CustomerSportGoods

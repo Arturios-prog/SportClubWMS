@@ -50,6 +50,26 @@ namespace SportClubAPI.Controllers
             else return Ok(foundSportGood);
         }
 
+        // GET: api/<controller>/Footballball
+        [HttpGet("name({name})")]
+        public IActionResult GetSportGoodByNameWithoutCustomers(string name)
+        {
+            var foundSportGood = _SportGoodRepository.GetSportGoodByName(name, false);
+            if (foundSportGood == null)
+                return NotFound();
+            else return Ok(foundSportGood);
+        }
+
+        // GET: api/<controller>/Football ball/includecustomers
+        [HttpGet("name({name})/includecustomers")]
+        public IActionResult GetSportGoodByNameWithCustomers(string name)
+        {
+            var foundSportGood = _SportGoodRepository.GetSportGoodByName(name, true);
+            if (foundSportGood == null)
+                return NotFound();
+            else return Ok(foundSportGood);
+        }
+
         // POST: api/<controller>
         [HttpPost]
         public IActionResult CreateSportGood([FromBody] SportGood SportGood)
@@ -58,7 +78,8 @@ namespace SportClubAPI.Controllers
                 return BadRequest();
             if (SportGood.Name == string.Empty)
                 ModelState.AddModelError("Name", "The name should contain a value.");
-
+            /*if (_SportGoodRepository.ContainsSportGood(SportGood))
+                ModelState.AddModelError("Sport Good", "This SportGood already exists in the database");*/
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -86,6 +107,31 @@ namespace SportClubAPI.Controllers
             if (SportGoodToUpdate == null)
                 return NotFound();
             _SportGoodRepository.UpdateSportGood(sportGood);
+            return NoContent();
+        }
+        
+        [HttpPut("{id}_quantity={quantity}_{isRemove}")]
+        public IActionResult UpdateSportGoodQuantityById(int id, uint quantity, bool isRemove)
+        {
+            if (id < 1)
+                return BadRequest();
+            var foundSportGood = _SportGoodRepository.GetSportGoodById(id, false);
+            if (foundSportGood == null)
+                return NotFound();
+
+            if (isRemove)
+            {
+                var sportGoodQuantity = foundSportGood.Quantity;
+                if (quantity > sportGoodQuantity)
+                {
+                    ModelState.AddModelError("Quantity", $"You can't remove quantity ({quantity}) that is bigger than total quantity({sportGoodQuantity})");
+                    return BadRequest(ModelState);
+                }
+
+                _SportGoodRepository.UpdateQuantitySportGood(id, quantity, Operands.SUB);
+                return NoContent();
+            }
+            _SportGoodRepository.UpdateQuantitySportGood(id, quantity, Operands.SUM);
             return NoContent();
         }
 

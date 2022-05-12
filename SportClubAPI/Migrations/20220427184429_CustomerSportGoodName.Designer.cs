@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportClubAPI.Models;
 
@@ -11,9 +12,10 @@ using SportClubAPI.Models;
 namespace SportClubAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220427184429_CustomerSportGoodName")]
+    partial class CustomerSportGoodName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace SportClubAPI.Migrations
 
                     b.HasIndex("SportGoodsId");
 
-                    b.ToTable("CustomerSportGood", (string)null);
+                    b.ToTable("CustomerSportGood");
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.Customer", b =>
@@ -78,7 +80,7 @@ namespace SportClubAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.CustomerSportGood", b =>
@@ -105,7 +107,7 @@ namespace SportClubAPI.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CustomerSportGoods", (string)null);
+                    b.ToTable("CustomerSportGoods");
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.SportGood", b =>
@@ -134,7 +136,7 @@ namespace SportClubAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SportGoods", (string)null);
+                    b.ToTable("SportGoods");
                 });
 
             modelBuilder.Entity("CustomerSportGood", b =>

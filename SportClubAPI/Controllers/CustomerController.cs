@@ -114,10 +114,14 @@ namespace SportClubAPI.Controllers
                 return BadRequest(ModelState);
 
             var customerToUpdate = _customerRepository.GetCustomerById(customer.Id, true);
-
             if (customerToUpdate == null)
                 return NotFound();
-            _customerRepository.UpdateCustomer(customerToUpdate);
+			/*foreach (var customerSportGood in customer.CustomerSportGoods)
+			{
+                _customerSportGoodRepository.UpdateCustomerSportGood(customerSportGood);
+
+            }*/
+            _customerRepository.UpdateCustomer(customer);
             return NoContent();
         }
 
@@ -157,7 +161,7 @@ namespace SportClubAPI.Controllers
                     SportGoodId = sportGoodId,
                     CustomerId = customerId,
                     Quantity = quantity,
-                    Customer = foundCustomer
+                    SportGoodName = foundSportGood.Name
                 };
                 _customerSportGoodRepository.AddCustomerSportGood(csg);
                 foundCustomer.SportGoods.Add(foundSportGood);

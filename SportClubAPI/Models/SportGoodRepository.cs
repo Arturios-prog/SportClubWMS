@@ -39,10 +39,10 @@ namespace SportClubAPI.Models
         {
             if (includeCustomers)
                 return _appDbContext.SportGoods.Include(c => c.Customers)
-                    .Where(s => s.Name == name).FirstOrDefault();
+                    .Where(s => s.Name.Replace(" ", "") == name).FirstOrDefault();
 
             return _appDbContext.SportGoods
-                .Where(s => s.Name == name).FirstOrDefault();
+                .Where(s => s.Name.Replace(" ", "") == name).FirstOrDefault();
         }
 
         public SportGood AddSportGood(SportGood SportGood)
@@ -54,7 +54,7 @@ namespace SportClubAPI.Models
 
         public SportGood? UpdateSportGood(SportGood sportGood)
         {
-            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(c => c.Id == sportGood.Id);
+            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(fs => fs.Id == sportGood.Id);
 
             if (foundSportGood != null)
             {
@@ -75,10 +75,11 @@ namespace SportClubAPI.Models
         {
             var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(c => c.Id == id);
             var foundCustomerSportGood = _appDbContext.CustomerSportGoods.FirstOrDefault(csg => csg.SportGoodId == id);
-            if (foundSportGood == null || foundCustomerSportGood == null) return;
+            if (foundSportGood == null) return;
 
             _appDbContext.SportGoods.Remove(foundSportGood);
-            _appDbContext.CustomerSportGoods.Remove(foundCustomerSportGood);
+            if (foundCustomerSportGood != null)
+                _appDbContext.CustomerSportGoods.Remove(foundCustomerSportGood);
             _appDbContext.SaveChanges();
         }
 
@@ -101,6 +102,11 @@ namespace SportClubAPI.Models
                 }
                 _appDbContext.SaveChanges();
             }
+        }
+
+        public bool ContainsSportGood(SportGood sportGood)
+        {
+            throw new NotImplementedException();
         }
     }
 }

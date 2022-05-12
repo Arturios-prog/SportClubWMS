@@ -5,9 +5,9 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportClubWMS", "SportClubWMS\SportClubWMS.csproj", "{1E49A33F-4BE8-47C1-9B53-74BE8D7E6AAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportClubAPI", "SportClubAPI\SportClubAPI.csproj", "{F1B17BA8-0ED0-43AC-A90D-A5FA6A0E9DA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportClubAPI", "SportClubAPI\SportClubAPI.csproj", "{F1B17BA8-0ED0-43AC-A90D-A5FA6A0E9DA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportClubWMS.Shared", "SportClubWMS.Shared\SportClubWMS.Shared.csproj", "{EF0C07D7-DE38-4D14-B3F6-6B29CB09D832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportClubWMS.Shared", "SportClubWMS.Shared\SportClubWMS.Shared.csproj", "{EF0C07D7-DE38-4D14-B3F6-6B29CB09D832}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -72,7 +72,7 @@ namespace SportClubAPI.Models
                 foundCustomer.Age = customer.Age;
                 foundCustomer.Gender = customer.Gender;
                 foundCustomer.CustomerSportGoods = customer.CustomerSportGoods;
-                foundCustomer.SportGoods = customer.SportGoods;
+                /*foundCustomer.SportGoods = customer.SportGoods;*/
                 foundCustomer.Address = customer.Address;
                 foundCustomer.Email = customer.Email;
                 foundCustomer.SubscribeStatus = customer.SubscribeStatus;

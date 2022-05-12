@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Radzen;
 using SportClubWMS;
 using SportClubWMS.Services;
 
@@ -8,9 +9,9 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<IRefreshService, RefreshService>();
 
-if (builder.HostEnvironment.IsDevelopment())
-{
     builder.Services.AddOidcAuthentication(options =>
     {
         // Configure your authentication provider options here.
@@ -18,10 +19,10 @@ if (builder.HostEnvironment.IsDevelopment())
         builder.Configuration.Bind("Local", options.ProviderOptions);
     });
 
+
+
     builder.Services.AddHttpClient<ICustomerDataService, CustomerDataService>
         (client => client.BaseAddress = new Uri("https://localhost:7117"));
     builder.Services.AddHttpClient<ISportGoodDataService, SportGoodDataService>
         (client => client.BaseAddress = new Uri("https://localhost:7117"));
-}
-
 await builder.Build().RunAsync();

@@ -15,7 +15,7 @@ namespace SportClubWMS.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<SportGood>?> GetAllCustomers(bool includeCustomers)
+        public async Task<IEnumerable<SportGood>?> GetAllSportGoods(bool includeCustomers)
         {
             if (!includeCustomers)
                 return await JsonSerializer.DeserializeAsync<IEnumerable<SportGood>>
@@ -38,10 +38,26 @@ namespace SportClubWMS.Services
                     (await _httpClient.GetStreamAsync($"api/sportgood/{sportGoodId}/includecustomers"),
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+        public async Task<SportGood?> GetSportGoodByName(string sportGoodName, bool includeCustomers)
+        {
+            if (!includeCustomers)
+                return await JsonSerializer.DeserializeAsync<SportGood>
+                    (await _httpClient.GetStreamAsync($"api/sportgood/name({sportGoodName.Trim()})"),
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            else
+                return await JsonSerializer.DeserializeAsync<SportGood>
+                    (await _httpClient.GetStreamAsync($"api/sportgood/name({sportGoodName.Trim(' ')})/includecustomers"),
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
 
         public async Task DeleteSportGood(int sportGoodId)
         {
             await _httpClient.DeleteAsync($"api/sportgood/{sportGoodId}");
+        }
+
+        public async Task UpdateQuantitySportGood(int sportGoodId, uint quantity, bool isRemove)
+        {
+            await _httpClient.PutAsync($"api/sportgood/{sportGoodId}_quantity={quantity}_{isRemove}", null);
         }
     }
 }

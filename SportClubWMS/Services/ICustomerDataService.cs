@@ -11,6 +11,7 @@ namespace SportClubWMS.Services
         Task<IEnumerable<CustomerSportGood>?> GetAllCustomerSportGoodsById(int customerId);
         Task<Customer?> GetCustomerById(int customerId, bool includeGoods);
         Task<uint> GetCustomerSportGoodsCount(int customerId);
+        Task DeleteCustomerSportGood(int customerId, int sportGoodId);
         Task RemoveSportGoodFromCustomer(int customerId, int sportGoodId, uint quantity);
         Task UpdateCustomer(Customer customer);
     }

@@ -11,5 +11,6 @@ namespace SportClubAPI.Models
         SportGood? GetSportGoodByName(string name, bool includeCustomers);
         void UpdateQuantitySportGood(int id, uint quantity, string operation);
         SportGood? UpdateSportGood(SportGood sportGood);
+        bool ContainsSportGood(SportGood sportGood);
     }
 }

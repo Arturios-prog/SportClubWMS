@@ -9,6 +9,7 @@ namespace SportClubAPI.Models
         IEnumerable<CustomerSportGood> GetAllCustomerSportGoods();
         IEnumerable<CustomerSportGood> GetAllCustomerSportGoodsById(int customerId);
         CustomerSportGood? GetCustomerSportGoodById(int customerid, int sportGoodid);
+        CustomerSportGood? UpdateCustomerSportGood(CustomerSportGood customerSportGood);
         void UpdateCustomerSportGoodQuantity(int sportGoodId, uint quantity, string operation);
     }
 }

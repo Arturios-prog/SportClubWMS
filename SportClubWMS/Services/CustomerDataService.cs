@@ -69,6 +69,13 @@ namespace SportClubWMS.Services
 
         public async Task UpdateCustomer(Customer customer)
         {
+            /*foreach (var customerSportGood in customer.CustomerSportGoods)
+            {
+                if (customerSportGood.Quantity == 0)
+                {
+                    customer.CustomerSportGoods.Remove(customerSportGood);
+                }
+            }*/
             var customerJson =
                 new StringContent(JsonSerializer.Serialize(customer), Encoding.UTF8, "application/json");
             await _httpClient.PutAsync("api/customer", customerJson);
@@ -83,6 +90,11 @@ namespace SportClubWMS.Services
         {
             await _httpClient.PutAsync($"api/customer/customer({customerId})_good({sportGoodId})_remove({quantity})", null);
         }
+
+        public async Task DeleteCustomerSportGood(int customerId, int sportGoodId)
+		{
+            await _httpClient.DeleteAsync($"api/customer/{customerId}/{sportGoodId}");
+		}
 
         public async Task DeleteCustomer(int customerId)
         {
