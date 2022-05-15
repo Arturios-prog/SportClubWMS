@@ -41,6 +41,11 @@
 						<RadzenDataGridColumn TItem="CustomerSportGood" Property="Id" Filterable="false" Title="ID" Frozen="true" Width="70px" TextAlign="TextAlign.Center" />
 						<RadzenDataGridColumn TItem="CustomerSportGood" Property="SportGoodName" Filterable="true" Title="Sport Good's Name" TextAlign="TextAlign.Center" />
 						<RadzenDataGridColumn TItem="CustomerSportGood" Property="Quantity" Filterable="true" Title="Quantity" TextAlign="TextAlign.Center" />
+						<RadzenDataGridColumn TItem="CustomerSportGood" Property="CustomerId" Filterable="false" Title="Info" Width="70px" TextAlign="TextAlign.Center" >
+							<Template Context="customerSportGood">
+								<RadzenButton ButtonStyle="ButtonStyle.Info" Icon="info" Class="m-1" Click=@(() => OpenSportGoodInfo(customerSportGood.SportGoodId))></RadzenButton>
+							</Template>
+						</RadzenDataGridColumn>
 					</Columns>
 				</RadzenDataGrid>
 			</RadzenCard>

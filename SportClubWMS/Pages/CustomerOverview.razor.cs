@@ -42,7 +42,6 @@ namespace SportClubWMS.Pages
             await DialogService.OpenAsync<DialogCustomerPage>($"customer {id}",
                new Dictionary<string, object>() { { "CustomerId", id } },
                new DialogOptions() { Width = "700px", Height = "570px" });
-            RefreshService.RefreshRequested += RefreshMe;
         }
 
         public async Task OpenCustomerEdit(int id)

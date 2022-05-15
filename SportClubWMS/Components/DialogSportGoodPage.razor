@@ -30,9 +30,15 @@
 				<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" PageSize="5" AllowPaging="true" AllowSorting="true"
 								Data="@SportGood.Customers" TItem="@Customer">
 					<Columns>
-						<RadzenDataGridColumn TItem="Customer" Property="CustomerId" Filterable="false" Title="ID" Frozen="true" Width="70px" TextAlign="TextAlign.Center" />
+						<RadzenDataGridColumn TItem="Customer" Property="CustomerId" Filterable="false" Title="ID" Frozen="true" Width="70px" TextAlign="TextAlign.Center" >
+						</RadzenDataGridColumn>
 						<RadzenDataGridColumn TItem="Customer" Property="FirstName" Filterable="true" Title="First Name" TextAlign="TextAlign.Center" />
 						<RadzenDataGridColumn TItem="Customer" Property="SecondName" Filterable="true" Title="Second Name" TextAlign="TextAlign.Center" />
+						<RadzenDataGridColumn TItem="Customer" Property="CustomerId" Filterable="false" Title="Info" Width="70px" TextAlign="TextAlign.Center" >
+							<Template Context="customer">
+								<RadzenButton ButtonStyle="ButtonStyle.Info" Icon="info" Class="m-1" Click=@(() => OpenCustomerInfo(customer.CustomerId))></RadzenButton>
+							</Template>
+						</RadzenDataGridColumn>
 						
 					</Columns>
 				</RadzenDataGrid>

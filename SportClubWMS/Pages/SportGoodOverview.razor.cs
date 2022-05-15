@@ -48,7 +48,7 @@ namespace SportClubWMS.Pages
                new Dictionary<string, object>() {
                    { "SportGoodId", id },
                    {"dataGrid", dataGrid } },
-               new DialogOptions() { Width = "1000px", Height = "600px" });
+               new DialogOptions() { Width = "1000px", Height = "400px" });
 
         }
 
