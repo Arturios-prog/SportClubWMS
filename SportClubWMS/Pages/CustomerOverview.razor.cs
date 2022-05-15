@@ -37,7 +37,7 @@ namespace SportClubWMS.Pages
         {
             customers = (await CustomerDataService.GetAllCustomers(true)).ToList();
         }
-        public async Task OpenCustomerInfoAsync(int id)
+        public async Task OpenCustomerInfo(int id)
         {
             await DialogService.OpenAsync<DialogCustomerPage>($"customer {id}",
                new Dictionary<string, object>() { { "CustomerId", id } },
@@ -45,7 +45,7 @@ namespace SportClubWMS.Pages
             RefreshService.RefreshRequested += RefreshMe;
         }
 
-        public async Task OpenCustomerEditAsync(int id)
+        public async Task OpenCustomerEdit(int id)
         {
             await DialogService.OpenAsync<DialogEditCustomerPage>($"customer {id}",
                new Dictionary<string, object>() {
@@ -55,14 +55,14 @@ namespace SportClubWMS.Pages
 
         }
 
-        public async Task AddNewCustomerAsync()
+        public async Task AddNewCustomer()
         {
             await DialogService.OpenAsync<DialogEditCustomerPage>("Add new Customer",
                 new Dictionary<string, object>() { { "dataGrid", dataGrid } },
                 new DialogOptions() { Width = "1000px", Height = "600px" });
         }
 
-        protected async Task DeleteCustomerAsync(int id)
+        protected async Task DeleteCustomer(int id)
         {
             var confirmResult = await DialogService.Confirm("Are you sure you want to delete this cutomer? \n All the goods will be returned to Sport Good's Database", "Warning");
             if (confirmResult.HasValue && confirmResult.Value)

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportClubAPI.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace SportClubAPI.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SecondName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -26,14 +26,14 @@ namespace SportClubAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "SportGoods",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    SportGoodId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
@@ -42,7 +42,7 @@ namespace SportClubAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SportGoods", x => x.Id);
+                    table.PrimaryKey("PK_SportGoods", x => x.SportGoodId);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,6 +53,7 @@ namespace SportClubAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     SportGoodId = table.Column<int>(type: "int", nullable: false),
+                    SportGoodName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -62,7 +63,7 @@ namespace SportClubAPI.Migrations
                         name: "FK_CustomerSportGoods_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
+                        principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -70,30 +71,30 @@ namespace SportClubAPI.Migrations
                 name: "CustomerSportGood",
                 columns: table => new
                 {
-                    CustomersId = table.Column<int>(type: "int", nullable: false),
-                    SportGoodsId = table.Column<int>(type: "int", nullable: false)
+                    CustomersCustomerId = table.Column<int>(type: "int", nullable: false),
+                    SportGoodsSportGoodId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerSportGood", x => new { x.CustomersId, x.SportGoodsId });
+                    table.PrimaryKey("PK_CustomerSportGood", x => new { x.CustomersCustomerId, x.SportGoodsSportGoodId });
                     table.ForeignKey(
-                        name: "FK_CustomerSportGood_Customers_CustomersId",
-                        column: x => x.CustomersId,
+                        name: "FK_CustomerSportGood_Customers_CustomersCustomerId",
+                        column: x => x.CustomersCustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
+                        principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomerSportGood_SportGoods_SportGoodsId",
-                        column: x => x.SportGoodsId,
+                        name: "FK_CustomerSportGood_SportGoods_SportGoodsSportGoodId",
+                        column: x => x.SportGoodsSportGoodId,
                         principalTable: "SportGoods",
-                        principalColumn: "Id",
+                        principalColumn: "SportGoodId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerSportGood_SportGoodsId",
+                name: "IX_CustomerSportGood_SportGoodsSportGoodId",
                 table: "CustomerSportGood",
-                column: "SportGoodsId");
+                column: "SportGoodsSportGoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerSportGoods_CustomerId",

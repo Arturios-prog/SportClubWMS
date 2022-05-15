@@ -69,13 +69,6 @@ namespace SportClubWMS.Services
 
         public async Task UpdateCustomer(Customer customer)
         {
-            /*foreach (var customerSportGood in customer.CustomerSportGoods)
-            {
-                if (customerSportGood.Quantity == 0)
-                {
-                    customer.CustomerSportGoods.Remove(customerSportGood);
-                }
-            }*/
             var customerJson =
                 new StringContent(JsonSerializer.Serialize(customer), Encoding.UTF8, "application/json");
             await _httpClient.PutAsync("api/customer", customerJson);

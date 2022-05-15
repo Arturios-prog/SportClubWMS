@@ -50,6 +50,18 @@ namespace SportClubWMS.Services
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
+        public async Task<SportGood?> AddSportGood(SportGood sportGood)
+        {
+            var sportGoodJson =
+                new StringContent(JsonSerializer.Serialize(sportGood), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/sportgood", sportGoodJson);
+
+            if (response.IsSuccessStatusCode)
+                return await JsonSerializer.DeserializeAsync<SportGood>(await response.Content.ReadAsStreamAsync());
+
+            return null;
+        }
+
         public async Task DeleteSportGood(int sportGoodId)
         {
             await _httpClient.DeleteAsync($"api/sportgood/{sportGoodId}");
@@ -58,6 +70,13 @@ namespace SportClubWMS.Services
         public async Task UpdateQuantitySportGood(int sportGoodId, uint quantity, bool isRemove)
         {
             await _httpClient.PutAsync($"api/sportgood/{sportGoodId}_quantity={quantity}_{isRemove}", null);
+        }
+
+        public async Task UpdateSportGood(SportGood sportGood)
+        {
+            var sportGoodJson =
+                new StringContent(JsonSerializer.Serialize(sportGood), Encoding.UTF8, "application/json");
+            await _httpClient.PutAsync("api/sportgood", sportGoodJson);
         }
     }
 }

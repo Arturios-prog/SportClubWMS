@@ -11,6 +11,7 @@ namespace SportClubWMS.Shared
     public class CustomerSportGood
     {
         public int Id { get; set; }
+
         [ForeignKey("Customers")]
         public int CustomerId { get; set; }
         public int SportGoodId { get; set; }

@@ -29,10 +29,10 @@ namespace SportClubAPI.Models
         {
             if (includeCustomers)
                 return _appDbContext.SportGoods.Include(c => c.Customers)
-                    .Where(s => s.Id == id).FirstOrDefault();
+                    .Where(s => s.SportGoodId == id).FirstOrDefault();
 
             return _appDbContext.SportGoods
-                .Where(s => s.Id == id).FirstOrDefault();
+                .Where(s => s.SportGoodId == id).FirstOrDefault();
         }
 
         public SportGood? GetSportGoodByName(string name, bool includeCustomers)
@@ -54,13 +54,13 @@ namespace SportClubAPI.Models
 
         public SportGood? UpdateSportGood(SportGood sportGood)
         {
-            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(fs => fs.Id == sportGood.Id);
+            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(fs => fs.SportGoodId == sportGood.SportGoodId);
 
             if (foundSportGood != null)
             {
                 foundSportGood.Name = sportGood.Name;
                 foundSportGood.Description = sportGood.Description;
-                foundSportGood.Customers = sportGood.Customers;
+                /*foundSportGood.Customers = sportGood.Customers;*/
                 foundSportGood.Category = sportGood.Category;
                 foundSportGood.Quantity = sportGood.Quantity;
 
@@ -73,7 +73,7 @@ namespace SportClubAPI.Models
 
         public void DeleteSportGood(int id)
         {
-            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(c => c.Id == id);
+            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(c => c.SportGoodId == id);
             var foundCustomerSportGood = _appDbContext.CustomerSportGoods.FirstOrDefault(csg => csg.SportGoodId == id);
             if (foundSportGood == null) return;
 
@@ -85,7 +85,7 @@ namespace SportClubAPI.Models
 
         public void UpdateQuantitySportGood(int id, uint quantity, string operation)
         {
-            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(c => c.Id == id);
+            var foundSportGood = _appDbContext.SportGoods.FirstOrDefault(c => c.SportGoodId == id);
             if (foundSportGood != null)
             {
                 switch (operation)

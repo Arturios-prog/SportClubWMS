@@ -25,6 +25,8 @@ namespace SportClubAPI.Controllers
             _customerSportGoodRepository = customerSportGoodRepository;
         }
 
+        private ICollection<SportGood> SportGoods { get; set; }
+
         // GET: api/<controller>/includegoods
         [HttpGet("includegoods")]
         public IActionResult GetCustomersWithGoods()
@@ -93,7 +95,7 @@ namespace SportClubAPI.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
+            
             var createdCustomer = _customerRepository.AddCustomer(customer);
             return Created("Customer", createdCustomer);
         }
@@ -113,20 +115,20 @@ namespace SportClubAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var customerToUpdate = _customerRepository.GetCustomerById(customer.Id, true);
+            var customerToUpdate = _customerRepository.GetCustomerById(customer.CustomerId, true);
             if (customerToUpdate == null)
                 return NotFound();
-			/*foreach (var customerSportGood in customer.CustomerSportGoods)
-			{
-                _customerSportGoodRepository.UpdateCustomerSportGood(customerSportGood);
 
-            }*/
+            //Here we check if the given customer has a sportGood and add the customer to a sportGood
+            
+
+
             _customerRepository.UpdateCustomer(customer);
             return NoContent();
         }
 
         // PUT: api/<controller>/customer(5)_good(1)_add(4)
-        [HttpPut("customer({customerId})_good({sportGoodId})_add({quantity})")]
+        /*[HttpPut("customer({customerId})_good({sportGoodId})_add({quantity})")]
         public IActionResult AddSportGoodToCustomer(int customerId, int sportGoodId, uint quantity)
         {
             if (customerId < 1 || sportGoodId < 1 || quantity < 1)
@@ -175,9 +177,9 @@ namespace SportClubAPI.Controllers
 
             _customerRepository.UpdateCustomer(foundCustomer);
             return NoContent();
-        }
+        }*/
         // PUT: api/<controller>/customer(5)_good(1)_remove(4)
-        [HttpPut("customer({customerId})_good({sportGoodId})_remove({quantity})")]
+        /*[HttpPut("customer({customerId})_good({sportGoodId})_remove({quantity})")]
         public IActionResult RemoveSportGoodFromCustomer(int customerId, int sportGoodId, uint quantity)
         {
             if (customerId < 1 || sportGoodId < 1 || quantity < 1)
@@ -236,7 +238,7 @@ namespace SportClubAPI.Controllers
             _customerRepository.UpdateCustomer(foundCustomer);
 
             return NoContent();
-        }
+        }*/
 
         // DELETE: api/<controller>/5
         [HttpDelete("{id}")]

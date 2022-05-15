@@ -5,13 +5,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opts =>
     opts.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
+
 builder.Services.AddControllers();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ISportGoodRepository, SportGoodRepository>();
 builder.Services.AddScoped<ICustomerSportGoodRepository, CustomerSportGoodRepository>();
+
 builder.Services.AddControllers()
        .AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling =
         Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
+using SportClubWMS.Components;
 using SportClubWMS.Services;
 using SportClubWMS.Shared;
 using System;
@@ -33,32 +34,32 @@ namespace SportClubWMS.Pages
         {
             sportGoods = (await SportGoodDataService.GetAllSportGoods(true)).ToList();
         }
-        public async Task OpenCustomerInfoAsync(int id)
+        public async Task OpenSportGoodInfo(int id)
         {
-            /*await DialogService.OpenAsync<DialogCustomerPage>($"customer {id}",
-               new Dictionary<string, object>() { { "CustomerId", id } },
+            await DialogService.OpenAsync<DialogSportGoodPage>($"Sport Good {id}",
+               new Dictionary<string, object>() { { "SportGoodId", id } },
                new DialogOptions() { Width = "700px", Height = "570px" });
-            RefreshService.RefreshRequested += RefreshMe;*/
+            RefreshService.RefreshRequested += RefreshMe;
         }
 
-        public async Task OpenCustomerEditAsync(int id)
+        public async Task OpenSportGoodEdit(int id)
         {
-            /*await DialogService.OpenAsync<DialogEditCustomerPage>($"customer {id}",
+            await DialogService.OpenAsync<DialogEditSportGoodPage>($"sportgood {id}",
                new Dictionary<string, object>() {
-                   { "CustomerId", id },
+                   { "SportGoodId", id },
                    {"dataGrid", dataGrid } },
-               new DialogOptions() { Width = "1000px", Height = "600px" });*/
+               new DialogOptions() { Width = "1000px", Height = "600px" });
 
         }
 
-        public async Task AddNewCustomerAsync()
+        public async Task AddNewSportGood()
         {
-            /*await DialogService.OpenAsync<DialogEditCustomerPage>("Add new Customer",
+            await DialogService.OpenAsync<DialogEditSportGoodPage>("Add new Sport Good",
                 new Dictionary<string, object>() { { "dataGrid", dataGrid } },
-                new DialogOptions() { Width = "1000px", Height = "600px" });*/
+                new DialogOptions() { Width = "1000px", Height = "600px" });
         }
 
-        protected async Task DeleteSportGoodAsync(int id)
+        protected async Task DeleteSportGood(int id)
         {
             var confirmResult = await DialogService.Confirm("Are you sure you want to delete this sportGood?", "Warning");
             if (confirmResult.HasValue && confirmResult.Value)

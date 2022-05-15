@@ -24,26 +24,26 @@ namespace SportClubAPI.Migrations
 
             modelBuilder.Entity("CustomerSportGood", b =>
                 {
-                    b.Property<int>("CustomersId")
+                    b.Property<int>("CustomersCustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SportGoodsId")
+                    b.Property<int>("SportGoodsSportGoodId")
                         .HasColumnType("int");
 
-                    b.HasKey("CustomersId", "SportGoodsId");
+                    b.HasKey("CustomersCustomerId", "SportGoodsSportGoodId");
 
-                    b.HasIndex("SportGoodsId");
+                    b.HasIndex("SportGoodsSportGoodId");
 
-                    b.ToTable("CustomerSportGood", (string)null);
+                    b.ToTable("CustomerSportGood");
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -76,9 +76,9 @@ namespace SportClubAPI.Migrations
                     b.Property<int>("SubscribeStatus")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CustomerId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.CustomerSportGood", b =>
@@ -105,16 +105,16 @@ namespace SportClubAPI.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CustomerSportGoods", (string)null);
+                    b.ToTable("CustomerSportGoods");
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.SportGood", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SportGoodId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SportGoodId"), 1L, 1);
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
@@ -132,35 +132,33 @@ namespace SportClubAPI.Migrations
                     b.Property<long>("Quantity")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.HasKey("SportGoodId");
 
-                    b.ToTable("SportGoods", (string)null);
+                    b.ToTable("SportGoods");
                 });
 
             modelBuilder.Entity("CustomerSportGood", b =>
                 {
                     b.HasOne("SportClubWMS.Shared.Customer", null)
                         .WithMany()
-                        .HasForeignKey("CustomersId")
+                        .HasForeignKey("CustomersCustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SportClubWMS.Shared.SportGood", null)
                         .WithMany()
-                        .HasForeignKey("SportGoodsId")
+                        .HasForeignKey("SportGoodsSportGoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.CustomerSportGood", b =>
                 {
-                    b.HasOne("SportClubWMS.Shared.Customer", "Customer")
+                    b.HasOne("SportClubWMS.Shared.Customer", null)
                         .WithMany("CustomerSportGoods")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("SportClubWMS.Shared.Customer", b =>

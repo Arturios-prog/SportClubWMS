@@ -102,7 +102,7 @@ namespace SportClubAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var SportGoodToUpdate = _SportGoodRepository.GetSportGoodById(sportGood.Id, true);
+            var SportGoodToUpdate = _SportGoodRepository.GetSportGoodById(sportGood.SportGoodId, true);
 
             if (SportGoodToUpdate == null)
                 return NotFound();

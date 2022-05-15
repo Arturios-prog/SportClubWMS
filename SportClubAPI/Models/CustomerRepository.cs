@@ -11,9 +11,15 @@ namespace SportClubAPI.Models
     public class CustomerRepository : ICustomerRepository
     {
         private readonly AppDbContext _appDbContext;
+        private List<SportGood> SportGoods = new List<SportGood>();
         public CustomerRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
+        }
+
+        public void SaveChanges()
+        {
+            _appDbContext.SaveChanges();
         }
 
         public IEnumerable<Customer> GetAllCustomers(bool includeGoods)
@@ -29,9 +35,9 @@ namespace SportClubAPI.Models
             {
                 return _appDbContext.Customers.Include(s => s.SportGoods)
                     .Include(csg=> csg.CustomerSportGoods)
-                    .Where(c => c.Id == id).FirstOrDefault();
+                    .Where(c => c.CustomerId == id).FirstOrDefault();
             }
-            return _appDbContext.Customers.Where(c => c.Id == id)
+            return _appDbContext.Customers.Where(c => c.CustomerId == id)
                 .FirstOrDefault();
         }
 
@@ -49,21 +55,36 @@ namespace SportClubAPI.Models
 
         public int? GetCustomerGoodsCount(int customerId)
         {
-            return _appDbContext.Customers.Where(c => c.Id == customerId)
+            return _appDbContext.Customers.Where(c => c.CustomerId == customerId)
                 .FirstOrDefault().CustomerSportGoods.Count;
         }
 
         public Customer AddCustomer(Customer customer)
         {
+            SportGoods.AddRange(customer.SportGoods);
+            customer.SportGoods.Clear();
+            var addedCustomer = _appDbContext.Customers.Add(customer);
+
+            _appDbContext.SaveChanges();
+            foreach (var sportGood in SportGoods)
+            {
+                customer.SportGoods.Add(sportGood);
+            }
+            _appDbContext.SaveChanges();
+            return addedCustomer.Entity;
+        }
+
+        /*public Customer AddCustomer(Customer customer)
+        {
             var addedEntity = _appDbContext.Customers.Add(customer);
             _appDbContext.SaveChanges();
             return addedEntity.Entity;
-        }
+        }*/
 
         public Customer? UpdateCustomer(Customer customer)
         {
             var foundCustomer = _appDbContext.Customers
-                .Where(fc => fc.Id == customer.Id).FirstOrDefault();
+                .Where(fc => fc.CustomerId == customer.CustomerId).FirstOrDefault();
 
             if (foundCustomer != null)
             {
@@ -72,13 +93,27 @@ namespace SportClubAPI.Models
                 foundCustomer.Age = customer.Age;
                 foundCustomer.Gender = customer.Gender;
                 foundCustomer.CustomerSportGoods = customer.CustomerSportGoods;
-                /*foundCustomer.SportGoods = customer.SportGoods;*/
                 foundCustomer.Address = customer.Address;
                 foundCustomer.Email = customer.Email;
                 foundCustomer.SubscribeStatus = customer.SubscribeStatus;
                 foundCustomer.RegistrationDate = customer.RegistrationDate;
 
+                SportGoods.AddRange(customer.SportGoods);
+                foundCustomer.SportGoods = new List<SportGood>();
+                customer.SportGoods = new List<SportGood>();
+                
                 _appDbContext.SaveChanges();
+                
+                _appDbContext.Entry(foundCustomer).State = EntityState.Detached;
+
+                if (SportGoods != null)
+                {
+                    foreach (var sportGood in SportGoods)
+                    {
+                        _appDbContext.SportGoods.Where(sg => sg.SportGoodId == sportGood.SportGoodId).FirstOrDefault().Customers.Add(customer);
+                    }
+                    _appDbContext.SaveChanges();
+                }
                 return foundCustomer;
             }
 
@@ -87,7 +122,7 @@ namespace SportClubAPI.Models
 
         public void DeleteCustomer(int id)
         {
-            var foundCustomer = _appDbContext.Customers.FirstOrDefault(c => c.Id == id);
+            var foundCustomer = _appDbContext.Customers.FirstOrDefault(c => c.CustomerId == id);
 
             if (foundCustomer == null) return;
 

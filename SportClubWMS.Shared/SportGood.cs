@@ -9,7 +9,7 @@ namespace SportClubWMS.Shared
 {
     public class SportGood
     {
-        public int Id { get; set; }
+        public int SportGoodId { get; set; }
         [Required]
         [StringLength(50, ErrorMessage = "The Name is too long.")]
         public string Name { get; set; } = string.Empty;
