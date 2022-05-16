@@ -8,19 +8,19 @@ There are two types of clients in this sport club: with a general subscribe and 
 Clients with general subscribe can only have 1 good of each category and clients with a subscribe plus can have as many goods as are present in the warehouse.    
 
 The responsibility of an employee is to assign certain goods to clients and remove them when clients are giving these goods back.    
-![Image alt](readmeImages/clients.JPG)
+![Image alt](readmeImages/clients.jpg)
 
 An employee can also add/edit clients and sport goods if needed.    
-![Image alt](readmeImages/addCustomer.JPG)
+![Image alt](readmeImages/addCustomer.jpg)
 
 All the entities are stored in the SQL database which is managed by EntityFramework Core.
 Entities are connected with a many-to-many connection.
 
-The interaction between front-end and back-end is happening via RESTful API which can also be inspected with Swagger UI.
-![Image alt](readmeImages/swagger.JPG)
+The interaction between front-end and back-end is happening via RESTful API which can also be inspected with Swagger UI.    
+![Image alt](readmeImages/swagger.jpg)
 
 Front-end is made using RadzenBlazor framework and client application is a webassembly project.    
-The platform is .NET 6.0    
+The target platform is .NET 6.0    
 
 ## Startup
 Since this project is not published, it is required to localy configure it's startup.    
