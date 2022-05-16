@@ -8,7 +8,7 @@ There are two types of clients in this sport club: with a general subscribe and 
 Clients with general subscribe can only have 1 good of each category and clients with a subscribe plus can have as many goods as are present in the warehouse.    
 
 The responsibility of an employee is to assign certain goods to clients and remove them when clients are giving these goods back.    
-![Image alt](clients.jpg)
+![Image alt](Solution Items/readmeImages/clients.jpg)
 
 An employee can also add/edit clients and sport goods if needed.    
 ![Image alt](addCustomer.jpg)
