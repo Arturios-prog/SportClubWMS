@@ -56,7 +56,7 @@ namespace SportClubWMS.Pages
         {
             await DialogService.OpenAsync<DialogEditSportGoodPage>("Add new Sport Good",
                 new Dictionary<string, object>() { { "dataGrid", dataGrid } },
-                new DialogOptions() { Width = "1000px", Height = "600px" });
+                new DialogOptions() { Width = "1000px", Height = "400px" });
         }
 
         protected async Task DeleteSportGood(int id)

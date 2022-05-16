@@ -127,101 +127,6 @@ namespace SportClubAPI.Controllers
             return NoContent();
         }
 
-        // PUT: api/<controller>/customer(5)_good(1)_add(4)
-        /*[HttpPut("customer({customerId})_good({sportGoodId})_add({quantity})")]
-        public IActionResult AddSportGoodToCustomer(int customerId, int sportGoodId, uint quantity)
-        {
-            if (customerId < 1 || sportGoodId < 1 || quantity < 1)
-            {
-                ModelState.AddModelError("Input", "Invalid input");
-                return BadRequest(ModelState);
-            }
-
-            var foundCustomer = _customerRepository.GetCustomerById(customerId, true);
-            var foundSportGood = _sportGoodRepository.GetSportGoodById(sportGoodId, false);
-            var foundCustomerSportGood = _customerSportGoodRepository.GetCustomerSportGoodById(customerId, sportGoodId);
-
-            if (foundCustomer == null || foundSportGood == null)
-            {
-                ModelState.AddModelError("Not found", "Object not found");
-                return NotFound(ModelState);
-            }
-
-            if (quantity > foundSportGood.Quantity)
-            {
-                ModelState.AddModelError("Quantity", $"You can't take a quantity ({quantity}) that is bigger " +
-                    $"than a total quantity of goods ({foundSportGood.Quantity}).");
-                return BadRequest(ModelState);
-            }
-
-            _sportGoodRepository.UpdateQuantitySportGood(sportGoodId, quantity, Operands.SUB);
-
-            if (foundCustomerSportGood == null)
-            {
-                var csg = new CustomerSportGood
-                {
-                    SportGoodId = sportGoodId,
-                    CustomerId = customerId,
-                    Quantity = quantity,
-                    SportGoodName = foundSportGood.Name
-                };
-                _customerSportGoodRepository.AddCustomerSportGood(csg);
-                foundCustomer.SportGoods.Add(foundSportGood);
-                foundCustomer.CustomerSportGoods.Add(csg);
-                foundSportGood.Customers.Add(foundCustomer);
-            }
-            else
-            {
-                _customerSportGoodRepository.UpdateCustomerSportGoodQuantity(sportGoodId, quantity, Operands.SUM);
-            }
-
-            _customerRepository.UpdateCustomer(foundCustomer);
-            return NoContent();
-        }*/
-        // PUT: api/<controller>/customer(5)_good(1)_remove(4)
-        /*[HttpPut("customer({customerId})_good({sportGoodId})_remove({quantity})")]
-        public IActionResult RemoveSportGoodFromCustomer(int customerId, int sportGoodId, uint quantity)
-        {
-            if (customerId < 1 || sportGoodId < 1 || quantity < 1)
-            {
-                ModelState.AddModelError("Input", "Invalid input");
-                return BadRequest(ModelState);
-            }
-
-            var foundCustomer = _customerRepository.GetCustomerById(customerId, true);
-            var foundSportGood = _sportGoodRepository.GetSportGoodById(sportGoodId, false);
-            var foundCustomerSportGood = _customerSportGoodRepository.GetCustomerSportGoodById(customerId, sportGoodId);
-
-            if (foundCustomer == null || foundSportGood == null
-                || foundCustomerSportGood == null)
-            {
-                ModelState.AddModelError("Not found", "Object not found");
-                return NotFound(ModelState);
-            }
-
-            if (quantity > foundCustomerSportGood.Quantity)
-            {
-                ModelState.AddModelError("Quantity", $"You can't take a quantity ({quantity}) that is bigger " +
-                    $"than a quantity of goods for a customer ({foundCustomerSportGood.Quantity}).");
-                return BadRequest(ModelState);
-            }
-
-            _sportGoodRepository.UpdateQuantitySportGood(sportGoodId, quantity, Operands.SUM);
-
-            if (quantity == foundCustomerSportGood.Quantity)
-            {
-                _customerSportGoodRepository.DeleteCustomerSportGood(customerId, sportGoodId);
-                foundCustomer.SportGoods.Remove(foundSportGood);
-                foundCustomer.CustomerSportGoods.Remove(foundCustomerSportGood);
-                foundSportGood.Customers.Remove(foundCustomer);
-            }
-            else
-                _customerSportGoodRepository.UpdateCustomerSportGoodQuantity(sportGoodId, quantity, Operands.SUB);
-
-            _customerRepository.UpdateCustomer(foundCustomer);
-            return NoContent();
-        }
-
         // DELETE: api/<controller>/5/2
         [HttpDelete("{customerId}/{sportGoodId}")]
         public IActionResult DeleteCustomerSportGood(int customerId, int sportGoodId)
@@ -238,7 +143,7 @@ namespace SportClubAPI.Controllers
             _customerRepository.UpdateCustomer(foundCustomer);
 
             return NoContent();
-        }*/
+        }
 
         // DELETE: api/<controller>/5
         [HttpDelete("{id}")]

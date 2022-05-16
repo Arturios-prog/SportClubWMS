@@ -11,8 +11,10 @@
 						<RadzenLabel Text="Name" />
 					</div>
 					<div class="col-md-8">
-						<RadzenTextBox style="width: 100%;" Name="Name" @bind-Value="SportGood.Name" />
+						<RadzenTextBox Change="@CheckName" style="width: 100%;" Name="Name" @bind-Value="SportGood.Name" />
 						<RadzenRequiredValidator Component="Name" Text="Name is required" Popup=false Style="position: static" />
+						<RadzenCompareValidator Visible="@(!string.IsNullOrEmpty(SportGood.Name))" Value="@FoundName" Component="Name"
+						Text="This name is already in the database" Style="position:static" Operator="CompareOperator.NotEqual"></RadzenCompareValidator>
 					</div>
 				</div>
 				<div class="row">

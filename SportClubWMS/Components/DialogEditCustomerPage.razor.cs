@@ -35,6 +35,7 @@ namespace SportClubWMS.Components
         public Dictionary<int, uint> MaxQuantities { get; set; } = new Dictionary<int, uint>();
 
         public Dictionary<int, uint> TempQuantitiesOfDeletedCsgs { get; set; } = new Dictionary<int, uint>();
+        public List<int> ChangedCsgs { get; set; } = new List<int>();
         [Inject]
         public ICustomerDataService CustomerDataService { get; set; }
         [Inject]
@@ -79,7 +80,7 @@ namespace SportClubWMS.Components
             //Add types to show in dropdown
             foreach (Gender genderType in (Gender[])Enum.GetValues(typeof(Gender)))
             {
-                GenderTypes.Add(new GenderType { GenderName = genderType.ToString(), EnumValue = genderType});
+                GenderTypes.Add(new GenderType { GenderName = genderType.ToString(), EnumValue = genderType });
             }
 
             foreach (SubscribeStatus subscribeType in (SubscribeStatus[])Enum.GetValues(typeof(SubscribeStatus)))
@@ -94,12 +95,17 @@ namespace SportClubWMS.Components
             foreach (var sportGood in SportGoods)
             {
                 var csg = Customer.CustomerSportGoods.FirstOrDefault(csg => csg.SportGoodId == sportGood.SportGoodId);
-                SportGoodNames.Add(sportGood.Name);
+                if (sportGood.Quantity >= 1)
+                    SportGoodNames.Add(sportGood.Name);
                 TempQuantities.Add(sportGood.SportGoodId, 0);
                 if (csg != null)
                     MaxQuantities.Add(sportGood.SportGoodId, sportGood.Quantity + csg.Quantity);
                 else
                     MaxQuantities.Add(sportGood.SportGoodId, sportGood.Quantity);
+            }
+            foreach (var item in MaxQuantities)
+            {
+                Console.WriteLine($"MaxQuantity for {item.Key} is {item.Value}");
             }
 
             RepickNames();
@@ -116,6 +122,21 @@ namespace SportClubWMS.Components
                 Console.WriteLine($"Added TempQuantity with SportGoodId {customerSportGood.SportGoodId}, and quantity {customerSportGood.Quantity}");
 
             }
+        }
+
+        private async Task SetCsgId(CustomerSportGood csg)
+        {
+            SportGood = await SportGoodDataService.GetSportGoodByName(csg.SportGoodName.Replace(" ", ""), false);
+            if (SportGood != null && csg.SportGoodId != SportGood.SportGoodId)
+            {
+                if (csg.SportGoodId != 0 && !ChangedCsgs.Contains(csg.SportGoodId))
+                    ChangedCsgs.Add(csg.SportGoodId);
+
+                csg.SportGoodId = SportGood.SportGoodId;
+
+            }
+            RepickNames();
+
         }
 
         //Determines a list of sport goods that client doesn't have yet
@@ -174,11 +195,7 @@ namespace SportClubWMS.Components
 
         async Task InsertRow()
         {
-            SportGood = await SportGoodDataService.GetSportGoodByName(SportGoodNamesToPick.FirstOrDefault().Replace(" ", ""), false);
-            if (SportGood != null)
-                csgToInsert = new CustomerSportGood { SportGoodId = SportGood.SportGoodId, SportGoodName = SportGood.Name };
-
-            else csgToInsert = new CustomerSportGood();
+            csgToInsert = new CustomerSportGood();
             await csgGrid.InsertRow(csgToInsert);
         }
 
@@ -247,31 +264,25 @@ namespace SportClubWMS.Components
             await csgGrid.UpdateRow(csg);
             SportGood = await SportGoodDataService.GetSportGoodByName(csg.SportGoodName.Replace(" ", ""), false);
 
-            if (csg.SportGoodId != SportGood.SportGoodId)
+            //If Updating an existing customer
+            if (Customer.CustomerId != 0)
             {
-                Console.WriteLine($"csg SportGoodId != SportGood.SportGoodId");
-                //If Updating an existing customer
-                if (Customer.CustomerId != 0)
-                {
-                    var foundCustomer = await CustomerDataService.GetCustomerById(CustomerId, true);
-                    var foundCsg = foundCustomer.CustomerSportGoods.FirstOrDefault(customerSportGood => customerSportGood.Id == csg.Id);
+                var foundCustomer = await CustomerDataService.GetCustomerById(CustomerId, true);
+                var foundCsg = foundCustomer.CustomerSportGoods.FirstOrDefault(customerSportGood => customerSportGood.Id == ChangedCsgs.FirstOrDefault(customerSportGood.Id));
 
-                    if (csg.SportGoodId != 0 && foundCsg != null)
-                    {
+                if (csg.SportGoodId != 0 && foundCsg != null)
+                {
+                    if (!TempQuantitiesOfDeletedCsgs.ContainsKey(csg.SportGoodId))
                         TempQuantitiesOfDeletedCsgs.Add(csg.SportGoodId, foundCsg.Quantity);
-
-                    }
                 }
-
-
-                csg.SportGoodId = SportGood.SportGoodId;
-                if (TempQuantities.ContainsKey(csg.SportGoodId) && TempQuantitiesOfDeletedCsgs.ContainsKey(csg.SportGoodId))
-                {
-                    Console.WriteLine("Found a new csg that was already deleted");
-                    TempQuantitiesOfDeletedCsgs.Remove(csg.SportGoodId);
-                }
-
             }
+
+            if (TempQuantities.ContainsKey(csg.SportGoodId) && TempQuantitiesOfDeletedCsgs.ContainsKey(csg.SportGoodId))
+            {
+                Console.WriteLine("Found a new csg that was already deleted");
+                TempQuantitiesOfDeletedCsgs.Remove(csg.SportGoodId);
+            }
+
             if (Customer.SportGoods.FirstOrDefault(sg => sg.SportGoodId == SportGood.SportGoodId) == null)
                 Customer.SportGoods.Add(SportGood);
 

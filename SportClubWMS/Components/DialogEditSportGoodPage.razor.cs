@@ -23,6 +23,9 @@ namespace SportClubWMS.Components
         public ISportGoodDataService SportGoodDataService { get; set; }
         [Inject]
         public DialogService Dialog { get; set; }
+        public IEnumerable<SportGood> SportGoods { get; set; } = new List<SportGood>();
+        public List<string> SportGoodNames { get; set; } = new List<string>();
+        public string FoundName { get; set; } = string.Empty;
 
         private class CategoryType
         {
@@ -36,6 +39,11 @@ namespace SportClubWMS.Components
             if (SportGoodId == 0)
             {
                 SportGood = new SportGood {};
+                SportGoods = await SportGoodDataService.GetAllSportGoods(false);
+				foreach (var sportGood in SportGoods)
+				{
+                    SportGoodNames.Add(sportGood.Name);
+				}
             }
             else
             {
@@ -53,14 +61,31 @@ namespace SportClubWMS.Components
 
         }
 
+        private void CheckName()
+		{
+            if (SportGood.SportGoodId == 0)
+			{
+                if (SportGoodNames.Contains(SportGood.Name))
+                {
+                    FoundName = SportGood.Name;
+                }
+                else
+                {
+                    FoundName = string.Empty;
+                }
+            }
+            
+        }
         protected async Task HandleValidSubmit()
         {
             if (SportGood.SportGoodId == 0)
             {
+
                 await SportGoodDataService.AddSportGood(SportGood);
             }
             else
             {
+                
                 await SportGoodDataService.UpdateSportGood(SportGood);
                 
             }

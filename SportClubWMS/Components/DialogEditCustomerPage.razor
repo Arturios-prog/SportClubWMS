@@ -95,7 +95,7 @@
 					<RadzenDataGridColumn TItem="CustomerSportGood" Property="SportGoodName" Filterable="true" Title="Sport Good's Name" TextAlign="TextAlign.Center">
 						<EditTemplate Context="customerSportGood">
 
-							<RadzenDropDown @bind-Value="customerSportGood.SportGoodName" Name="SportGoodName" Data="@SportGoodNamesToPick" Style="width:100%; display: block;" />
+							<RadzenDropDown Change="@(args => SetCsgId(customerSportGood))" @bind-Value="customerSportGood.SportGoodName" Name="SportGoodName" Data="@SportGoodNamesToPick" Style="width:100%; display: block;" />
 							<RadzenRequiredValidator Text="Sport Good Name is required" Component="SportGoodName" Popup="false" Style="position: static;" />
 
 						</EditTemplate>
@@ -109,7 +109,14 @@
 							}
 							else
 							{
-								<RadzenNumeric @ref="plusNumeric" @bind-Value="customerSportGood.Quantity" Name="Quantity" Style="width:100%" Min=0 Max=@(MaxQuantities[customerSportGood.SportGoodId])></RadzenNumeric>
+								@if (customerSportGood.SportGoodId == 0){
+									<RadzenNumeric @ref="plusNumeric" @bind-Value="customerSportGood.Quantity" Name="Quantity" Style="width:100%" Min=0 Disabled=true></RadzenNumeric>
+								}
+								else
+								{
+									<RadzenNumeric @ref="plusNumeric" @bind-Value="customerSportGood.Quantity" Name="Quantity" Style="width:100%" Min=0 Max=@(MaxQuantities[customerSportGood.SportGoodId])></RadzenNumeric>
+								}
+								
 							}
 							<RadzenRequiredValidator Text="Quantity is required" Component="Quantity" Popup="false" Style="position: static;" />
 
